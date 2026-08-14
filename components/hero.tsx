@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, ChevronDown, Star } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 import { resolveCtaLink } from "@/lib/utils"
 
 const fadeUp = {
@@ -14,26 +14,23 @@ const fadeUp = {
   }),
 }
 
+/**
+ * Only the fields the panel actually renders. The videos row also carries a
+ * title and description, but this hero shows neither — keeping them out of the
+ * prop keeps that copy out of the serialized payload sent to the browser.
+ */
 export type HeroProps = {
   video?: {
-    title: string
-    description: string
     video_url: string
     poster_url: string | null
     cta_text: string | null
     cta_link: string | null
   } | null
-  ratingSummary?: { average: number; totalReviews: number } | null
 }
 
-export function Hero({ video, ratingSummary }: HeroProps = {}) {
+export function Hero({ video }: HeroProps = {}) {
   const videoSrc = video?.video_url || "/hero-loop.mp4"
   const posterSrc = video?.poster_url || "/hero-loop-poster.png"
-  const headline = video?.title || "Skin that glows,\nrituals that last."
-  const [headlineLine1, headlineLine2] = headline.includes("\n")
-    ? headline.split("\n")
-    : [headline, ""]
-  const description = video?.description || "Clean botanical skincare for a luminous complexion."
   const ctaText = video?.cta_text || "Shop Best Sellers"
   const ctaLink = resolveCtaLink(video?.cta_link)
 
@@ -45,8 +42,8 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
     offset: ["start start", "end start"],
   })
 
-  // The panel is sticky, so as the next panel slides over it the copy drifts
-  // up and dissolves — transform/opacity only, so it stays on the compositor.
+  // The panel is sticky, so as the next panel slides over it the content
+  // drifts up and dissolves — transform/opacity only, stays on the compositor.
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-22%"])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0])
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.14])
@@ -79,57 +76,30 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
         </video>
       </motion.div>
 
-      {/* Scrims: vertical for the copy, vignette for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/30 to-foreground/80" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(35,31,30,0.55)_100%)]" />
+      {/* Scrims: vertical for legibility, vignette for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/20 to-foreground/70" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(35,31,30,0.5)_100%)]" />
 
-      {/* Copy */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-5 text-center md:px-8"
       >
-        <motion.span
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={0}
-          className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-ivory/70"
-        >
-          Luméa Essentials
-        </motion.span>
-
         <motion.h1
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={1}
-          className="mt-5 text-balance font-serif text-5xl font-semibold leading-[1.02] tracking-tight text-ivory drop-shadow-[0_2px_30px_rgba(0,0,0,0.45)] sm:text-6xl md:text-7xl lg:text-8xl"
+          custom={0}
+          className="font-serif text-3xl font-semibold uppercase tracking-[0.32em] text-ivory drop-shadow-[0_2px_24px_rgba(0,0,0,0.5)] sm:text-4xl md:text-5xl md:tracking-[0.38em]"
         >
-          {headlineLine1}
-          {headlineLine2 && (
-            <>
-              <br />
-              {headlineLine2}
-            </>
-          )}
+          Luméa Essentials
         </motion.h1>
-
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={2}
-          className="mt-6 max-w-md text-pretty text-base leading-relaxed text-ivory/80 md:text-lg"
-        >
-          {description}
-        </motion.p>
 
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={3}
-          className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+          custom={1}
+          className="mt-12 flex flex-col items-center gap-4 sm:flex-row"
         >
           <a
             href={ctaLink}
@@ -144,30 +114,6 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
           >
             Our Story
           </a>
-        </motion.div>
-
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={4}
-          className="mt-9 flex items-center gap-3 text-sm text-ivory/80"
-        >
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-            ))}
-          </div>
-          <span>
-            {ratingSummary ? (
-              <>
-                <strong className="font-semibold text-ivory">{ratingSummary.average}/5</strong> from{" "}
-                {ratingSummary.totalReviews.toLocaleString()}+ reviews
-              </>
-            ) : (
-              "Loved by thousands · Dermatologist-tested"
-            )}
-          </span>
         </motion.div>
       </motion.div>
 
