@@ -40,12 +40,12 @@ export function PhotoRevealSection() {
       <motion.div style={{ clipPath }} className="absolute inset-0 overflow-hidden bg-cream">
         <motion.div style={{ y: imageY }} className="absolute inset-0 h-[118%] w-full">
           <Image
-            src="/model-ritual.png"
+            src="/cleanse-foam.jpg"
             alt="A Luméa cleansing ritual"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[center_22%]"
+            className="object-cover object-[center_30%]"
           />
         </motion.div>
 
