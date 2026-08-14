@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Sparkles, ArrowRight, ShieldCheck, RefreshCw } from "lucide-react"
+import { resolveCtaLink } from "@/lib/utils"
 
 export type EditorialVideoSectionProps = {
   video?: {
@@ -25,7 +26,7 @@ export function EditorialVideoSection({ video }: EditorialVideoSectionProps = {}
   const description =
     video?.description || "A ceramide-rich daily cream that locks in moisture and repairs the skin barrier."
   const ctaText = video?.cta_text || "Shop Hydra Veil"
-  const ctaLink = video?.cta_link || "#shop"
+  const ctaLink = resolveCtaLink(video?.cta_link)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

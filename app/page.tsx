@@ -4,7 +4,6 @@ import { PhotoRevealSection } from "@/components/photo-reveal-section"
 import { ProductShowcase } from "@/components/product-showcase"
 import { EditorialVideoSection } from "@/components/editorial-video-section"
 import { StorytellingVideoSection } from "@/components/storytelling-video-section"
-import { Ritual } from "@/components/ritual"
 import { SiteFooter } from "@/components/site-footer"
 import { CartDrawer } from "@/components/cart-drawer"
 import { getProducts, getRatingSummary, getVideoByPlacement } from "@/lib/data"
@@ -22,12 +21,15 @@ export default async function Page() {
     <>
       <SiteHeader />
       <main>
-        <Hero video={heroVideo} ratingSummary={ratingSummary} />
-        <PhotoRevealSection />
+        {/* Intro: the hero sticks while the photo panel scrolls up over it,
+            so the two full-bleed panels hand off as one continuous motion. */}
+        <div className="relative">
+          <Hero video={heroVideo} ratingSummary={ratingSummary} />
+          <PhotoRevealSection />
+        </div>
         <ProductShowcase products={products} />
         <EditorialVideoSection video={editorialVideo} />
         <StorytellingVideoSection video={storytellingVideo} />
-        <Ritual />
       </main>
       <SiteFooter />
       <CartDrawer />

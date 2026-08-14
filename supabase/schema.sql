@@ -209,10 +209,35 @@ create policy "Admins can manage videos"
 -- Seed starter videos references
 insert into public.videos (title, description, video_url, poster_url, placement, display_order, is_active, cta_text, cta_link)
 values
-  ('Skin that glows, rituals that last.', 'Luméa Essentials blends high-performance actives with soothing botanicals for a luminous, healthy complexion — thoughtfully formulated, beautifully simple.', '/hero-loop.mp4', '/hero-loop-poster.png', 'hero', 0, true, 'Shop Best Sellers', '#shop'),
-  ('The Hydration Ritual', 'A lightweight, ceramide-rich daily cream that locks in moisture for a full 72 hours, repairing your skin barrier while restoring organic botanical suppleness.', '/banner-loop.mp4', '/banner-loop-poster.png', 'editorial_1', 0, true, 'Shop Hydra Veil', '#shop'),
-  ('Botanical Alchemy & Science', 'Every droplet of Luméa is cold-pressed and dermatologically tested, ensuring active bio-nutrients are delivered in their purest state directly to your skin.', '/storytelling-loop.mp4', '', 'editorial_2', 0, true, 'Our Clean Science', '#ritual')
+  ('Skin that glows, rituals that last.', 'Clean botanical skincare for a luminous complexion.', '/hero-loop.mp4', '/hero-loop-poster.png', 'hero', 0, true, 'Shop Best Sellers', '#shop'),
+  ('72-Hour Ceramide Hydration.', 'A ceramide-rich daily cream that locks in moisture and repairs the skin barrier.', '/banner-loop.mp4', '/banner-loop-poster.png', 'editorial_1', 0, true, 'Shop Hydra Veil', '#shop'),
+  ('Mindful Alchemy.', 'Cold-pressed and formulated in small batches, for actives at their purest.', '/storytelling-loop.mp4', '', 'editorial_2', 0, true, 'Our formulation values', '#shop')
 on conflict do nothing;
+
+-- ─────────────────────────────────────────────
+-- Migration for existing installs: the storefront copy was trimmed and the
+-- standalone "Ritual" section was removed, so shorten the stored descriptions
+-- and retarget any CTA still pointing at the retired #ritual anchor.
+-- Safe to re-run; only touches rows that still hold the original seed text.
+-- ─────────────────────────────────────────────
+update public.videos
+set description = 'Clean botanical skincare for a luminous complexion.'
+where placement = 'hero'
+  and description like 'Luméa Essentials blends high-performance actives%';
+
+update public.videos
+set description = 'A ceramide-rich daily cream that locks in moisture and repairs the skin barrier.'
+where placement = 'editorial_1'
+  and description like 'A lightweight, ceramide-rich daily cream%';
+
+update public.videos
+set description = 'Cold-pressed and formulated in small batches, for actives at their purest.'
+where placement = 'editorial_2'
+  and description like 'Every droplet of Luméa is cold-pressed%';
+
+update public.videos
+set cta_link = '#shop'
+where cta_link = '#ritual';
 
 -- ─────────────────────────────────────────────
 -- Seed starter products (safe to re-run, with full details)

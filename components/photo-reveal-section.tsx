@@ -5,39 +5,42 @@ import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 
 /**
- * Pure visual break between the hero and the shop grid — no copy, just the
- * ritual photo revealing and drifting gently as it scrolls into view.
+ * Full-bleed photo panel. Sits above the sticky hero in the stacking order and
+ * scrolls up over it, so the two intro panels hand off as one continuous move
+ * instead of two sections butting together.
+ *
+ * No copy by design — this panel is purely visual.
  */
 export function PhotoRevealSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement>(null)
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.06])
-  const y = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"])
+  // The photo drifts slower than the panel for depth. Transform-only.
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"])
 
   return (
-    <section ref={containerRef} className="bg-cream py-16 md:py-24">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        style={{ scale }}
-        className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] shadow-xl shadow-foreground/10 sm:max-w-lg md:max-w-xl"
-      >
-        <motion.div style={{ y }} className="absolute inset-0 h-[112%] w-full">
-          <Image
-            src="/model-ritual.png"
-            alt="A Luméa sheet-mask ritual"
-            fill
-            sizes="(max-width: 768px) 90vw, 576px"
-            className="object-cover object-top"
-          />
-        </motion.div>
+    <section
+      ref={containerRef}
+      className="relative z-10 h-svh w-full overflow-hidden bg-cream"
+    >
+      <motion.div style={{ y: imageY }} className="absolute inset-0 h-[118%] w-full">
+        <Image
+          src="/model-ritual.png"
+          alt="A Luméa sheet-mask ritual"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_22%]"
+        />
       </motion.div>
+
+      {/* Vignette + warm wash: adds depth and softens the upscale on wide viewports */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(35,31,30,0.35)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cream to-transparent" />
     </section>
   )
 }

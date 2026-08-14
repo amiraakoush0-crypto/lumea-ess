@@ -1,6 +1,3 @@
-"use client"
-
-import { motion } from "framer-motion"
 import { Leaf, Instagram, Twitter, Facebook } from "lucide-react"
 
 const columns = [
@@ -13,35 +10,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-cream">
       <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
-        {/* Newsletter */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center gap-6 rounded-[2rem] bg-sage-dark px-6 py-12 text-center md:px-12 md:py-16"
-        >
-          <h2 className="max-w-xl text-balance font-serif text-3xl font-semibold text-ivory md:text-4xl">
-            Join the Luméa community
-          </h2>
-          <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              required
-              placeholder="Enter your email"
-              className="w-full rounded-full bg-ivory/95 px-5 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold"
-            />
-            <button
-              type="submit"
-              className="shrink-0 rounded-full bg-gold px-7 py-3 text-sm font-semibold text-ivory transition-all duration-300 hover:scale-[1.03] hover:bg-gold-dark active:scale-[0.97]"
-            >
-              Subscribe
-            </button>
-          </form>
-        </motion.div>
-
         {/* Links */}
-        <div className="mt-16 grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <div className="flex items-center gap-2">
               <Leaf className="h-5 w-5 text-sage-dark" />

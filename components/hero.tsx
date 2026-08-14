@@ -2,14 +2,15 @@
 
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, Leaf, Star } from "lucide-react"
+import { ArrowRight, ChevronDown, Star } from "lucide-react"
+import { resolveCtaLink } from "@/lib/utils"
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 28 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.9, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] as const },
   }),
 }
 
@@ -34,141 +35,152 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
     : [headline, ""]
   const description = video?.description || "Clean botanical skincare for a luminous complexion."
   const ctaText = video?.cta_text || "Shop Best Sellers"
-  const ctaLink = video?.cta_link || "#shop"
+  const ctaLink = resolveCtaLink(video?.cta_link)
 
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   })
 
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  // The panel is sticky, so as the next panel slides over it the copy drifts
+  // up and dissolves — transform/opacity only, so it stays on the compositor.
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-22%"])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0])
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.14])
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay blocked until user interaction — poster covers the gap.
-      })
-    }
+    videoRef.current?.play().catch(() => {
+      // Autoplay blocked until interaction — the poster holds the frame.
+    })
   }, [])
 
   return (
-    <section ref={sectionRef} id="top" className="relative overflow-hidden bg-cream">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-28 md:grid-cols-2 md:gap-12 md:px-8 md:pb-24 md:pt-36">
-        {/* Copy */}
-        <motion.div style={{ opacity: contentOpacity }} className="order-2 text-center md:order-1 md:text-left">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={0}
-            className="inline-flex items-center gap-2 rounded-full bg-sage-soft px-4 py-1.5 text-xs font-medium text-sage-dark"
-          >
-            <Leaf className="h-3.5 w-3.5" />
-            Clean botanical skincare
-          </motion.div>
+    <section
+      ref={sectionRef}
+      id="top"
+      className="sticky top-0 h-svh w-full overflow-hidden bg-foreground"
+    >
+      {/* Full-bleed cinematic video */}
+      <motion.div style={{ scale: videoScale }} className="absolute inset-0 h-full w-full">
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={posterSrc}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </motion.div>
 
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            className="mt-5 text-balance font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-foreground md:text-6xl"
-          >
-            {headlineLine1}
-            {headlineLine2 && (
-              <>
-                <br />
-                {headlineLine2}
-              </>
-            )}
-          </motion.h1>
+      {/* Scrims: vertical for the copy, vignette for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/30 to-foreground/80" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(35,31,30,0.55)_100%)]" />
 
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="mx-auto mt-5 max-w-md text-pretty text-base leading-relaxed text-muted md:mx-0"
-          >
-            {description}
-          </motion.p>
+      {/* Copy */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-5 text-center md:px-8"
+      >
+        <motion.span
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={0}
+          className="text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-ivory/70"
+        >
+          Luméa Essentials
+        </motion.span>
 
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={3}
-            className="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-start"
-          >
-            <a
-              href={ctaLink}
-              className="group inline-flex items-center gap-2 rounded-full bg-sage-dark px-7 py-3.5 text-sm font-semibold text-ivory shadow-md transition-all duration-300 hover:scale-[1.03] hover:bg-gold-dark hover:shadow-lg active:scale-[0.97]"
-            >
-              {ctaText}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <a
-              href="#ritual"
-              className="inline-flex items-center gap-2 rounded-full border border-border px-7 py-3.5 text-sm font-semibold text-foreground transition-all duration-300 hover:scale-[1.03] hover:border-sage-dark hover:bg-sage-soft active:scale-[0.97]"
-            >
-              Discover the ritual
-            </a>
-          </motion.div>
+        <motion.h1
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={1}
+          className="mt-5 text-balance font-serif text-5xl font-semibold leading-[1.02] tracking-tight text-ivory drop-shadow-[0_2px_30px_rgba(0,0,0,0.45)] sm:text-6xl md:text-7xl lg:text-8xl"
+        >
+          {headlineLine1}
+          {headlineLine2 && (
+            <>
+              <br />
+              {headlineLine2}
+            </>
+          )}
+        </motion.h1>
 
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={4}
-            className="mt-8 flex items-center justify-center gap-5 text-sm text-muted md:justify-start"
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={2}
+          className="mt-6 max-w-md text-pretty text-base leading-relaxed text-ivory/80 md:text-lg"
+        >
+          {description}
+        </motion.p>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={3}
+          className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+        >
+          <a
+            href={ctaLink}
+            className="group inline-flex items-center gap-2 rounded-full bg-ivory px-9 py-4 text-sm font-semibold text-foreground shadow-xl shadow-black/20 transition-all duration-300 hover:scale-[1.03] hover:bg-gold hover:text-ivory active:scale-[0.97]"
           >
+            {ctaText}
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
+          <a
+            href="#story"
+            className="inline-flex items-center gap-2 rounded-full border border-ivory/40 px-9 py-4 text-sm font-semibold text-ivory backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:border-ivory hover:bg-ivory/10 active:scale-[0.97]"
+          >
+            Our Story
+          </a>
+        </motion.div>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={4}
+          className="mt-9 flex items-center gap-3 text-sm text-ivory/80"
+        >
+          <div className="flex items-center gap-0.5">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+            ))}
+          </div>
+          <span>
             {ratingSummary ? (
               <>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <span>
-                  <strong className="text-foreground">{ratingSummary.average}/5</strong> from{" "}
-                  {ratingSummary.totalReviews.toLocaleString()}+ reviews
-                </span>
+                <strong className="font-semibold text-ivory">{ratingSummary.average}/5</strong> from{" "}
+                {ratingSummary.totalReviews.toLocaleString()}+ reviews
               </>
             ) : (
-              <span className="inline-flex items-center gap-2">
-                <Leaf className="h-4 w-4" />
-                Dermatologist-tested
-              </span>
+              "Loved by thousands · Dermatologist-tested"
             )}
-          </motion.div>
+          </span>
         </motion.div>
+      </motion.div>
 
-        {/* Serum video — framed in its native portrait shape so the shot isn't cropped to its dark backdrop */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="order-1 mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-[2rem] shadow-xl shadow-foreground/10 md:order-2 md:max-w-none"
-        >
-          <motion.div style={{ y: videoY }} className="h-[112%] w-full">
-            <video
-              ref={videoRef}
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster={posterSrc}
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-          </motion.div>
-        </motion.div>
-      </div>
+      <motion.a
+        href="#shop"
+        aria-label="Scroll down"
+        style={{ opacity: contentOpacity }}
+        animate={{ y: [0, 9, 0] }}
+        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        className="absolute bottom-8 left-1/2 z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-ivory/40 text-ivory transition-colors hover:bg-ivory/10"
+      >
+        <ChevronDown className="h-5 w-5" />
+      </motion.a>
     </section>
   )
 }

@@ -40,7 +40,7 @@ const fallbackVideos: VideoRecord[] = [
     display_order: 0,
     is_active: true,
     cta_text: "Our Clean Science",
-    cta_link: "#ritual",
+    cta_link: "#shop",
     created_at: new Date().toISOString(),
   }
 ]

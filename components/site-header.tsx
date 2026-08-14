@@ -10,7 +10,7 @@ import { SearchModal } from "./search-modal"
 const nav = [
   { label: "Shop All", href: "#shop" },
   { label: "Best Sellers", href: "#shop" },
-  { label: "Our Ritual", href: "#ritual" },
+  { label: "Our Story", href: "#story" },
 ]
 
 export function SiteHeader() {

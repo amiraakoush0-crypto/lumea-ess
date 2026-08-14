@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Droplet, Heart, Shield } from "lucide-react"
+import { resolveCtaLink } from "@/lib/utils"
 
 export type StorytellingVideoSectionProps = {
   video?: {
@@ -25,7 +26,7 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
   const description =
     video?.description || "Cold-pressed and formulated in small batches, for actives at their purest."
   const ctaText = video?.cta_text || "Our formulation values"
-  const ctaLink = video?.cta_link || "#ritual"
+  const ctaLink = resolveCtaLink(video?.cta_link)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -44,7 +45,7 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
   }, [])
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden bg-sage-soft/10 py-24 md:py-32 border-t border-b border-border/40">
+    <section ref={containerRef} id="story" className="relative overflow-hidden bg-sage-soft/10 py-24 md:py-32 border-t border-b border-border/40">
       
       {/* Decorative botanical element or texture placeholder */}
       <div className="absolute right-0 top-0 -z-10 h-72 w-72 rounded-full bg-gold/5 blur-3xl" />
