@@ -386,3 +386,31 @@ drop policy if exists "Authenticated admins can delete media" on storage.objects
 create policy "Authenticated admins can delete media"
   on storage.objects for delete
   using (bucket_id = 'media' and auth.role() = 'authenticated');
+
+-- ─────────────────────────────────────────────
+-- Atomic stock decrement for checkout
+-- The products RLS policy only lets 'authenticated' (admin) sessions write
+-- to the table, but checkout runs as an anonymous customer. SECURITY DEFINER
+-- lets this one narrow operation (floor-subtract the stock column) run with
+-- the function owner's privileges instead of the caller's, without opening
+-- up product writes generally. The UPDATE is a single row-locked statement
+-- per product, so two concurrent orders for the last unit can't both read
+-- the same stock value and oversell it.
+-- ─────────────────────────────────────────────
+create or replace function public.decrement_stock(items jsonb)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.products p
+  set stock = greatest(0, p.stock - (elem->>'quantity')::integer),
+      updated_at = now()
+  from jsonb_array_elements(items) as elem
+  where p.id = (elem->>'id')::uuid;
+end;
+$$;
+
+revoke all on function public.decrement_stock(jsonb) from public;
+grant execute on function public.decrement_stock(jsonb) to anon, authenticated;

@@ -135,28 +135,19 @@ export async function createOrder(
       return { error: itemsError.message }
     }
 
-    // 4. Update product stock levels — one batched read + one batched write
-    // instead of a SELECT+UPDATE round trip per line item.
+    // 4. Atomically decrement product stock via a SECURITY DEFINER RPC (see
+    // supabase/schema.sql). A single row-locked UPDATE per product means
+    // concurrent orders can't both read the same stock value and oversell
+    // the last unit — and it works under RLS for anonymous checkout, unlike
+    // a direct update against the products table.
     const uuidItems = items.filter((item) =>
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.id),
     )
     if (uuidItems.length > 0) {
-      const { data: currentStocks } = await supabase
-        .from("products")
-        .select("id, stock")
-        .in("id", uuidItems.map((item) => item.id))
-
-      const stockById = new Map((currentStocks ?? []).map((p) => [p.id, p.stock]))
-      const stockUpdates = uuidItems
-        .filter((item) => stockById.has(item.id))
-        .map((item) => ({
-          id: item.id,
-          stock: Math.max(0, (stockById.get(item.id) ?? 0) - item.quantity),
-        }))
-
-      if (stockUpdates.length > 0) {
-        await supabase.from("products").upsert(stockUpdates, { onConflict: "id" })
-      }
+      const { error: stockError } = await supabase.rpc("decrement_stock", {
+        items: uuidItems.map((item) => ({ id: item.id, quantity: item.quantity })),
+      })
+      if (stockError) console.error("Stock decrement error:", stockError)
     }
 
     revalidatePath("/admin/orders")
