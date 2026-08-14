@@ -11,21 +11,8 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative isolate overflow-hidden border-t border-border">
-      <video
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster="/hero-loop-poster.png"
-      >
-        <source src="/hero-loop.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 -z-10 bg-cream/85 backdrop-blur-sm" />
-
-      <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
+    <footer className="border-t border-border bg-cream">
+      <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
         {/* Newsletter */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}

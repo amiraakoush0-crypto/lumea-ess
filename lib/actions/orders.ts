@@ -40,7 +40,7 @@ export async function createOrder(
     let customerId: string | null = null
     
     // Check if customer exists by phone (phone number is unique)
-    const { data: existingCustomer, error: findError } = await supabase
+    const { data: existingCustomer } = await supabase
       .from("customers")
       .select("id")
       .eq("phone", customer.phone)
@@ -135,24 +135,27 @@ export async function createOrder(
       return { error: itemsError.message }
     }
 
-    // 4. Update Product Stock levels
-    for (const item of items) {
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.id)
-      if (isUuid) {
-        // Read current stock
-        const { data: prod } = await supabase
-          .from("products")
-          .select("stock")
-          .eq("id", item.id)
-          .single()
-        
-        if (prod && prod.stock !== undefined) {
-          const newStock = Math.max(0, prod.stock - item.quantity)
-          await supabase
-            .from("products")
-            .update({ stock: newStock })
-            .eq("id", item.id)
-        }
+    // 4. Update product stock levels — one batched read + one batched write
+    // instead of a SELECT+UPDATE round trip per line item.
+    const uuidItems = items.filter((item) =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.id),
+    )
+    if (uuidItems.length > 0) {
+      const { data: currentStocks } = await supabase
+        .from("products")
+        .select("id, stock")
+        .in("id", uuidItems.map((item) => item.id))
+
+      const stockById = new Map((currentStocks ?? []).map((p) => [p.id, p.stock]))
+      const stockUpdates = uuidItems
+        .filter((item) => stockById.has(item.id))
+        .map((item) => ({
+          id: item.id,
+          stock: Math.max(0, (stockById.get(item.id) ?? 0) - item.quantity),
+        }))
+
+      if (stockUpdates.length > 0) {
+        await supabase.from("products").upsert(stockUpdates, { onConflict: "id" })
       }
     }
 
