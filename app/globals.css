@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FBF9F5;
+  --color-foreground: #231F1E;
+
+  --color-cream: #F5EFEB;
+  --color-ivory: #FFFFFF;
+
+  --color-sage: #A84A4D;
+  --color-sage-dark: #7B282B;
+  --color-sage-soft: #F8ECEC;
+
+  --color-gold: #7B282B;
+  --color-gold-dark: #5E1D1F;
+
+  --color-muted: #706864;
+  --color-border: #EBE5DF;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+
+  --radius: 1.25rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: color-mix(in oklch, var(--color-ivory) 65%, transparent);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid color-mix(in oklch, white 40%, transparent);
+  }
+  .glass-strong {
+    background: color-mix(in oklch, var(--color-ivory) 88%, transparent);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border: 1px solid color-mix(in oklch, white 50%, transparent);
+  }
+  .text-gradient-gold {
+    background: linear-gradient(120deg, var(--color-gold-dark), var(--color-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+/* Shimmer placeholder for lazy images */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--color-sage-soft) 60%, transparent) 25%,
+    color-mix(in oklch, var(--color-ivory) 90%, transparent) 50%,
+    color-mix(in oklch, var(--color-sage-soft) 60%, transparent) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Custom scrollbar for drawer */
+.thin-scroll::-webkit-scrollbar { width: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-sage-soft);
+  border-radius: 999px;
+}
