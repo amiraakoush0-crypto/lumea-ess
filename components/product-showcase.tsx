@@ -37,9 +37,6 @@ export function ProductShowcase({ products }: { products: Product[] }) {
         >
           Shop best sellers
         </motion.h2>
-        <p className="mt-3 max-w-lg text-pretty leading-relaxed text-muted">
-          Clean formulas loved by thousands. Find your ritual, one radiant step at a time.
-        </p>
       </div>
 
       {/* Filters */}

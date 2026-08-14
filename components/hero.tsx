@@ -32,9 +32,7 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
   const [headlineLine1, headlineLine2] = headline.includes("\n")
     ? headline.split("\n")
     : [headline, ""]
-  const description =
-    video?.description ||
-    "Luméa Essentials blends high-performance actives with soothing botanicals for a luminous, healthy complexion — thoughtfully formulated, beautifully simple."
+  const description = video?.description || "Clean botanical skincare for a luminous complexion."
   const ctaText = video?.cta_text || "Shop Best Sellers"
   const ctaLink = video?.cta_link || "#shop"
 
@@ -98,7 +96,7 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
           className="inline-flex items-center gap-2 rounded-full bg-ivory/90 px-4 py-1.5 text-xs font-medium text-sage-dark shadow-sm backdrop-blur"
         >
           <Leaf className="h-3.5 w-3.5 text-sage-dark" />
-          Clean, botanical, dermatologist-tested
+          Clean botanical skincare
         </motion.div>
 
         <motion.h1
@@ -171,7 +169,7 @@ export function Hero({ video, ratingSummary }: HeroProps = {}) {
           ) : (
             <span className="inline-flex items-center gap-2">
               <Leaf className="h-4 w-4" />
-              Formulated with clean, dermatologist-tested actives
+              Dermatologist-tested
             </span>
           )}
         </motion.div>

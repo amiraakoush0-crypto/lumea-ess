@@ -23,8 +23,7 @@ export function EditorialVideoSection({ video }: EditorialVideoSectionProps = {}
   const posterSrc = video?.poster_url || "/banner-loop-poster.png"
   const headline = video?.title || "72-Hour Ceramide Hydration."
   const description =
-    video?.description ||
-    "A lightweight, ceramide-rich daily cream that locks in moisture for a full 72 hours, repairing your skin barrier while restoring organic botanical suppleness. Experience the luxurious sensation of melting hydration that absorbs instantly without weight."
+    video?.description || "A ceramide-rich daily cream that locks in moisture and repairs the skin barrier."
   const ctaText = video?.cta_text || "Shop Hydra Veil"
   const ctaLink = video?.cta_link || "#shop"
 
@@ -74,30 +73,21 @@ export function EditorialVideoSection({ video }: EditorialVideoSectionProps = {}
                   <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-sage-soft text-sage-dark">
                     <Sparkles className="h-3 w-3" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground">Triple Ceramide Barrier Support</h4>
-                    <p className="text-xs text-muted">Ceramides NP, AP, and EOP lock moisture deep within the lipid barrier.</p>
-                  </div>
+                  <h4 className="text-sm font-semibold text-foreground">Triple Ceramide Barrier Support</h4>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-sage-soft text-sage-dark">
                     <ShieldCheck className="h-3 w-3" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground">Botanical Squalane & Rosewater</h4>
-                    <p className="text-xs text-muted">Nourishes and calms redness, providing a dewy, soft-focus finish.</p>
-                  </div>
+                  <h4 className="text-sm font-semibold text-foreground">Botanical Squalane & Rosewater</h4>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-sage-soft text-sage-dark">
                     <RefreshCw className="h-3 w-3" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-foreground">Non-Comedogenic & Clean</h4>
-                    <p className="text-xs text-muted">Free of parabens, synthetic fragrances, and pore-clogging mineral oils.</p>
-                  </div>
+                  <h4 className="text-sm font-semibold text-foreground">Non-Comedogenic & Clean</h4>
                 </div>
               </div>
 
@@ -138,7 +128,7 @@ export function EditorialVideoSection({ video }: EditorialVideoSectionProps = {}
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-sage-dark"></span>
                 </span>
-                Campaign Film: The Veil of Hydration
+Campaign Film
               </div>
             </div>
           </div>

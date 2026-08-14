@@ -9,19 +9,19 @@ const steps = [
     icon: Sun,
     step: "01",
     title: "Cleanse & Prep",
-    text: "Begin with Cloud Milk Cleanser to gently lift impurities without stripping.",
+    text: "Cloud Milk Cleanser lifts impurities without stripping.",
   },
   {
     icon: Droplets,
     step: "02",
     title: "Treat & Hydrate",
-    text: "Layer Radiance Serum, then seal with Hydra Veil for lasting moisture.",
+    text: "Radiance Serum, sealed with Hydra Veil.",
   },
   {
     icon: Moon,
     step: "03",
     title: "Restore Overnight",
-    text: "Finish with Midnight Restore Oil to renew skin while you sleep.",
+    text: "Midnight Restore Oil renews skin while you sleep.",
   },
 ]
 
@@ -61,11 +61,8 @@ export function Ritual() {
             The Luméa Ritual
           </span>
           <h2 className="mt-3 text-balance font-serif text-4xl font-semibold text-foreground md:text-5xl">
-            Three mindful steps to luminous skin
+            Three steps to luminous skin
           </h2>
-          <p className="mt-3 max-w-md text-pretty leading-relaxed text-muted">
-            A ritual designed to be simple, sensorial, and effective — morning and night.
-          </p>
 
           <div className="mt-8 flex flex-col gap-5">
             {steps.map((s, i) => {

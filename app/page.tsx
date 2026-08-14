@@ -1,6 +1,5 @@
 import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
-import { ModelRitualSection } from "@/components/model-ritual-section"
 import { ProductShowcase } from "@/components/product-showcase"
 import { EditorialVideoSection } from "@/components/editorial-video-section"
 import { StorytellingVideoSection } from "@/components/storytelling-video-section"
@@ -23,7 +22,6 @@ export default async function Page() {
       <SiteHeader />
       <main>
         <Hero video={heroVideo} ratingSummary={ratingSummary} />
-        <ModelRitualSection />
         <ProductShowcase products={products} />
         <EditorialVideoSection video={editorialVideo} />
         <StorytellingVideoSection video={storytellingVideo} />

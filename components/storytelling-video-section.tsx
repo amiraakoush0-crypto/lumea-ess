@@ -23,9 +23,8 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
   const posterSrc = video?.poster_url || undefined
   const headline = video?.title || "Mindful Alchemy."
   const description =
-    video?.description ||
-    "We believe skincare is a daily ritual of self-care. Every droplet of Luméa is cold-pressed and formulated in small batches, ensuring our active bio-nutrients reach your skin barrier in their purest, most potent form."
-  const ctaText = video?.cta_text || "Discover our formulation values"
+    video?.description || "Cold-pressed and formulated in small batches, for actives at their purest."
+  const ctaText = video?.cta_text || "Our formulation values"
   const ctaLink = video?.cta_link || "#ritual"
 
   const { scrollYProgress } = useScroll({
@@ -108,30 +107,21 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Shield className="h-5 w-5" />
                   </div>
-                  <div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground">Dermatologist Tested</h3>
-                    <p className="mt-1 text-xs text-muted">Clinically proven formulas tested for reactive, sensitive skin types.</p>
-                  </div>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Dermatologist Tested</h3>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Heart className="h-5 w-5" />
                   </div>
-                  <div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground">100% Clean & Vegan</h3>
-                    <p className="mt-1 text-xs text-muted">Cruelty-free, organic plant-derived ingredients with zero synthetic fillers.</p>
-                  </div>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">100% Clean & Vegan</h3>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Droplet className="h-5 w-5" />
                   </div>
-                  <div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground">Sustainable Sourcing</h3>
-                    <p className="mt-1 text-xs text-muted">Ethically harvested ingredients packaged in infinitely recyclable violet glass.</p>
-                  </div>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Sustainable Sourcing</h3>
                 </div>
 
               </div>

@@ -11,8 +11,21 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-cream">
-      <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
+    <footer className="relative isolate overflow-hidden border-t border-border">
+      <video
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/hero-loop-poster.png"
+      >
+        <source src="/hero-loop.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 -z-10 bg-cream/85 backdrop-blur-sm" />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-20">
         {/* Newsletter */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -24,9 +37,6 @@ export function SiteFooter() {
           <h2 className="max-w-xl text-balance font-serif text-3xl font-semibold text-ivory md:text-4xl">
             Join the Luméa community
           </h2>
-          <p className="max-w-md text-pretty text-sm leading-relaxed text-ivory/80">
-            Subscribe to receive expert skincare tips, ingredient insights, and early access to new launches.
-          </p>
           <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
@@ -50,9 +60,6 @@ export function SiteFooter() {
               <Leaf className="h-5 w-5 text-sage-dark" />
               <span className="font-serif text-2xl font-semibold text-foreground">Luméa</span>
             </div>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
-              Clean, botanical skincare rituals crafted for luminous, healthy skin.
-            </p>
             <div className="mt-5 flex gap-3">
               {[Instagram, Twitter, Facebook].map((Icon, i) => (
                 <a
