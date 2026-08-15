@@ -22,10 +22,10 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
 
   const videoSrc = video?.video_url || "/storytelling-loop.mp4"
   const posterSrc = video?.poster_url || undefined
-  const headline = video?.title || "Mindful Alchemy."
+  const headline = video?.title || "Chosen, not just stocked."
   const description =
-    video?.description || "Cold-pressed and formulated in small batches, for actives at their purest."
-  const ctaText = video?.cta_text || "Our formulation values"
+    video?.description || "Every product on the shelf earns its place, picked for how it actually performs."
+  const ctaText = video?.cta_text || "Shop the Collection"
   const ctaLink = resolveCtaLink(video?.cta_link)
 
   const { scrollYProgress } = useScroll({
@@ -108,21 +108,21 @@ export function StorytellingVideoSection({ video }: StorytellingVideoSectionProp
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Shield className="h-5 w-5" />
                   </div>
-                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Dermatologist Tested</h3>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Genuine Brands</h3>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Heart className="h-5 w-5" />
                   </div>
-                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">100% Clean & Vegan</h3>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Chosen by Hand</h3>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sage-dark text-ivory">
                     <Droplet className="h-5 w-5" />
                   </div>
-                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Sustainable Sourcing</h3>
+                  <h3 className="self-center font-serif text-lg font-semibold text-foreground">Ask Us Anything</h3>
                 </div>
 
               </div>

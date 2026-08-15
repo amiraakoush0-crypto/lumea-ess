@@ -22,10 +22,10 @@ export function EditorialVideoSection({ video }: EditorialVideoSectionProps = {}
 
   const videoSrc = video?.video_url || "/banner-loop.mp4"
   const posterSrc = video?.poster_url || "/banner-loop-poster.png"
-  const headline = video?.title || "72-Hour Ceramide Hydration."
+  const headline = video?.title || "Glass-shine lips, every day."
   const description =
-    video?.description || "A ceramide-rich daily cream that locks in moisture and repairs the skin barrier."
-  const ctaText = video?.cta_text || "Shop Hydra Veil"
+    video?.description || "Jelly-cushion gloss and tinted balm that layer like glass and stay comfortable for hours."
+  const ctaText = video?.cta_text || "Shop Lips"
   const ctaLink = resolveCtaLink(video?.cta_link)
 
   const { scrollYProgress } = useScroll({

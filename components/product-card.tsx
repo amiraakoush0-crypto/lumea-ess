@@ -72,10 +72,16 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
       </Link>
 
       <div className="mt-4 flex flex-1 flex-col px-1">
+        {/* A product with no reviews yet shows just its category — a rating
+            beside "(0)" reads as a real score nobody has actually given. */}
         <div className="flex items-center gap-1 text-xs text-muted">
-          <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-          <span className="font-medium text-foreground">{product.rating}</span>
-          <span>({product.reviews.toLocaleString()})</span>
+          {product.reviews > 0 && (
+            <>
+              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              <span className="font-medium text-foreground">{product.rating}</span>
+              <span>({product.reviews.toLocaleString()})</span>
+            </>
+          )}
           <span className="ml-auto text-sage-dark">{product.category}</span>
         </div>
 
