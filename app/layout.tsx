@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Inter, Cormorant_Garamond } from "next/font/google"
 import type { ReactNode } from "react"
 import { CartProvider } from "@/components/cart-context"
+import { MotionProvider } from "@/components/motion-provider"
 import "./globals.css"
 
 const inter = Inter({
@@ -20,22 +21,22 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
-    default: "Luméa Essentials — Luxury Skincare Rituals",
+    default: "Luméa Essentials — Beauty & Everyday Essentials",
     template: "%s — Luméa Essentials",
   },
   description:
-    "Luméa Essentials crafts clean, results-driven skincare rituals. Serums, creams and oils formulated with botanical actives for luminous, healthy skin.",
-  keywords: ["luxury skincare", "serum", "moisturizer", "clean beauty", "Luméa Essentials"],
+    "Lip care, hair treatments, body care and everyday essentials, hand-picked from the brands worth stocking. Delivered across Lebanon.",
+  keywords: ["beauty", "lip care", "hair care", "body care", "Lebanon", "Luméa Essentials"],
   openGraph: {
-    title: "Luméa Essentials — Luxury Skincare Rituals",
-    description: "Clean, results-driven skincare rituals for luminous skin.",
+    title: "Luméa Essentials — Beauty & Everyday Essentials",
+    description: "Hand-picked lip, hair and body care, delivered across Lebanon.",
     type: "website",
     siteName: "Luméa Essentials",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luméa Essentials — Luxury Skincare Rituals",
-    description: "Clean, results-driven skincare rituals for luminous skin.",
+    title: "Luméa Essentials — Beauty & Everyday Essentials",
+    description: "Hand-picked lip, hair and body care, delivered across Lebanon.",
   },
 }
 
@@ -49,7 +50,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`bg-background ${inter.variable} ${cormorant.variable}`}>
       <body className="font-sans antialiased">
-        <CartProvider>{children}</CartProvider>
+        <MotionProvider>
+          <CartProvider>{children}</CartProvider>
+        </MotionProvider>
       </body>
     </html>
   )

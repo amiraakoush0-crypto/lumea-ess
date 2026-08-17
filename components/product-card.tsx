@@ -49,8 +49,10 @@ export function ProductCard({ product, index }: { product: Product; index: numbe
           imgClassName="p-6 transition-transform duration-700 ease-out group-hover:scale-110"
         />
 
-        {/* Quick add */}
-        <div className="absolute inset-x-3 bottom-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        {/* Quick add. Revealed on hover for pointers, on focus-within so keyboard
+            users can see what they've tabbed to, and permanently on coarse
+            pointers where there is no hover state to trigger at all. */}
+        <div className="absolute inset-x-3 bottom-3 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 [@media(pointer:coarse)]:translate-y-0 [@media(pointer:coarse)]:opacity-100">
           <button
             onClick={(e) => {
               e.preventDefault()

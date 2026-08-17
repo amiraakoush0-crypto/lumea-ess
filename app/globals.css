@@ -38,6 +38,37 @@
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
+
+  /* Keyboard users get a visible ring on every control, not only the handful of
+     components that style focus themselves. :focus-visible keeps it off mouse
+     clicks, so this costs pointer users nothing. */
+  :focus-visible {
+    outline: 2px solid var(--color-sage-dark);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Long strings — product names, customer emails in the admin tables — wrap
+     instead of forcing the page to scroll sideways. */
+  h1, h2, h3, p, td, th, li {
+    overflow-wrap: break-word;
+  }
+}
+
+/* Respect the OS "reduce motion" setting. This covers CSS animation and
+   transitions; Framer Motion animates inline in JS and is handled separately
+   by MotionProvider (components/motion-provider.tsx). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @layer utilities {
